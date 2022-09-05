@@ -1,0 +1,14 @@
+@import '../../assets/variable.scss';
+
+.bar-left {
+
+    &__item {
+        border-right: 4px solid $mainColor;
+        img {
+            border-radius: 50%;
+        }
+        .link {
+            padding-left: 1rem;
+        }
+    }
+}

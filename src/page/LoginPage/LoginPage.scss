@@ -1,0 +1,59 @@
+@import '../../assets/variable.scss';
+
+.login {
+    background-color: $mainColor;
+    display: flex;
+    flex-direction: row;
+    margin: 20px auto;
+    height: auto;
+    padding: 0;
+}
+
+.layout-right {
+    background-color: $white;
+    padding: 3rem 2rem;
+
+    border-bottom-left-radius: 50px;
+    border-top-left-radius: 50px;
+    .language {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        color: $gray;
+    }
+
+    .main-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: auto;
+
+        .sigup__option {
+            margin: 2rem 0;
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .formik-login {
+            font-size: 1.2rem;
+        }
+        .form-control {
+            font-size: 1.2rem;
+            border-top: none;
+            border-right: none;
+            border-left: none;
+            border-radius: 0;
+            border-bottom: 2px $gray solid;
+        }
+        .btn-submit {
+            font-size: 1.2rem;
+        }
+    }
+}
+.logo {
+    position: absolute;
+    top: 25%;
+    right: 55%;
+    transform: rotate(-7.15deg);
+}

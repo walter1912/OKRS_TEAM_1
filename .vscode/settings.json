@@ -1,0 +1,10 @@
+{
+  // Set the default
+  "editor.formatOnSave": false,
+  // Enable per-language
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
