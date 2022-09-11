@@ -1,0 +1,609 @@
+{
+	"info": {
+		"_postman_id": "73085e6e-0c98-4d21-9e5d-32d64ec67bbc",
+		"name": "OKRs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18344481"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "/sign-up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "leoasher@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "firstName",
+									"value": "Leo",
+									"type": "text"
+								},
+								{
+									"key": "lastName",
+									"value": "Asher",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "leoasher",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/v1/auth/sign-up",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "leoasher@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "leoasher",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/v1/auth/login",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/refresh-token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "refreshToken",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzA5OTMwMjU5YTY2MWM1OGJlZjQxMzciLCJpc3MiOiJsZW9hc2hlckBnbWFpbC5jb20iLCJpYXQiOjE2NjE2MjQ0NzksImV4cCI6MjI2NjQyNDQ3OX0.veF7DHGRrwSH6TbArqfVWbLshmIsGo5jgoYWXQ3iIco",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/v1/auth/refresh-token",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "/profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/v1/users/profile",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "leoasher@gmail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "firstName",
+									"value": "Leo",
+									"type": "text"
+								},
+								{
+									"key": "lastName",
+									"value": "Asher",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "leoasher",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "dob",
+									"value": "Mon Jan 12 1970 20:39:54 GMT+0800 (Indochina Time)",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "phoneNumber",
+									"value": "0342828393",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "Hà Đông, Hà Nội ",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/v1/users/profile",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "objective",
+			"item": [
+				{
+					"name": "/objectives",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/v1/objectives",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"objectives"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/objectives/:id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/v1/objectives/6316f28aa5d291cffd92f803",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"objectives",
+								"6316f28aa5d291cffd92f803"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/objectives",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "objective2",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "description 2",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "COMMIT",
+									"type": "text"
+								},
+								{
+									"key": "deadline",
+									"value": "Tue Sep 06 2022 14:31:07 GMT+0700 (Indochina Time)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/v1/objectives",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"objectives"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/objectives",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "update - objective1",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "update - description 1",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "COMMIT",
+									"type": "text"
+								},
+								{
+									"key": "deadline",
+									"value": "Thu Jan 01 1970 07:59:57 GMT+0800 (Indochina Time)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/v1/objectives?objectiveID=123",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"objectives"
+							],
+							"query": [
+								{
+									"key": "objectiveID",
+									"value": "123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/objectives",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/v1/objectives?objectiveID=123",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"objectives"
+							],
+							"query": [
+								{
+									"key": "objectiveID",
+									"value": "123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/objectives/key-results",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/v1/objectives/123/key-results/456",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"objectives",
+								"123",
+								"key-results",
+								"456"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/objectives/key-results",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "key result 1",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "key result  1",
+									"type": "text"
+								},
+								{
+									"key": "deadline",
+									"value": "Thu Jan 01 1970 08:59:57 GMT+0800 (Indochina Time)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/v1/objectives/123/key-results",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"objectives",
+								"123",
+								"key-results"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/objectives/key-results",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/v1/objectives/123/key-results/456",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"objectives",
+								"123",
+								"key-results",
+								"456"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/objectives/key-results",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/v1/objectives/123/key-results",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"objectives",
+								"123",
+								"key-results"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

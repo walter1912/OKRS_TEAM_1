@@ -1,0 +1,25 @@
+@import '../../assets/variable.scss';
+
+.infor {
+    background-color:$secondColor ;
+    margin: 2rem auto;
+    padding: 2rem;
+    &__main {
+        padding-bottom: 1rem;
+        border-bottom: 4px solid $white;
+        img {
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+        }
+    }
+    &__list {
+        padding-left: 0;
+        i {
+            font-size: 40px;
+        }
+    }
+    &__item {
+        margin: 1rem auto;
+    }
+}

@@ -1,0 +1,11 @@
+@import '../../assets/variable.scss';
+
+.editUser {
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    padding: 1rem;
+    border: 2px solid $mainColor;
+    border-radius: 8px;
+    background-color: $secondColor;
+}

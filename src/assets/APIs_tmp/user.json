@@ -1,0 +1,13 @@
+{
+    "_id": "630da1b26ae60f58d53fd3de",
+    "email": "leoasher@gmail.com",
+    "password": "$2a$10$yBZDQPH5sBqiwJaLAkNVTeNRuf1QD3OrJEdfXUuj7.TKnNmTq2L5O",
+    "firstName": "Leo",
+    "lastName": "Asher",
+    "createdAt": "2022-08-30T05:35:46.879Z",
+    "updatedAt": "2022-08-30T07:37:08.874Z",
+    "__v": 0,
+    "address": "Hà Đông, Hà Nội ",
+    "dob": "1970-01-12T12:39:54.000Z",
+    "phoneNumber": "0342828393"
+}
