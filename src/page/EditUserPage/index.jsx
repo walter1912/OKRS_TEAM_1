@@ -73,6 +73,7 @@ const EditUserPage = (props) => {
                     </Form>
                 )}
             </Formik>
+            <Link to='/user' ><button className='btn'>Return</button></Link>
         </div>
     );
 };

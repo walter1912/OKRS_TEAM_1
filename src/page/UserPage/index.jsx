@@ -36,7 +36,7 @@ const UserPage = (props) => {
                 </ul>
             </div>
             <nav className="infor__update">
-                <Link to='/edit'>
+                <Link to='edit'>
                     <button className="btn btn-outlet-primary text-primary">
                         Chỉnh sửa thông tin người dùng
                     </button>

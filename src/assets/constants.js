@@ -4,6 +4,8 @@ import { ReactComponent as react } from './icons/react.svg';
 
 import logo from './imgs/Abstraction.png';
 import user from './imgs/hacker.png';
+import userAvatar from './imgs/userAvatar.png';
+
 export const Icon = {
     gg,
     fb,
@@ -13,4 +15,5 @@ export const Icon = {
 export const Img = {
     logo,
     user,
+    userAvatar,
 };

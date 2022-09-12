@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 const Footer = props => {
     return (
-        <div>
-            đây là footer
-        </div>
+        <footer className='d-flex flex-column justifycontent-center align-items-center mt-5 mb-5'>
+            <span>@Override All In Blessing</span>
+        </footer>
     );
 };
 
