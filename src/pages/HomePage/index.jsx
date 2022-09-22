@@ -1,16 +1,29 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Img } from '~/assets/constants.js';
 import clsx from 'clsx';
 import './HomePage.scss';
 import { Link } from 'react-router-dom';
-import Header from '~/components/Header';
-import Footer from '~/components/Footer';
+import Header from '~/layouts/Header';
+import Footer from '~/layouts/Footer';
 
 import user from '../../assets/APIs_tmp/user.json';
 import objectives from '../../assets/APIs_tmp/objectives.json';
+import Pagination from '~/components/Pagination';
+
 
 const HomePage = (props) => {
+    let PageSize = 3;
+// phân trang
+const [currentPage, setCurrentPage] = useState(1);
+
+  const currentTableData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+    return objectives.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage]);
+// hết phần phân trang
+
     return (
         <div>
             <Header props={user} />
@@ -25,6 +38,7 @@ const HomePage = (props) => {
                                 type="search"
                                 name="search_objective"
                                 id="search_objective"
+                                placeholder="Search Objective"
                             />
                             <button className="btn">
                                 <i className="fa-solid fa-magnifying-glass"></i>
@@ -44,15 +58,34 @@ const HomePage = (props) => {
                     </div>
                 </nav>
                 <section className="obj">
-                    <ul className="container">
-                        {objectives.map((obj) => {
+                    <ul className="container obj__list">
+                        <li
+                            key="0"
+                            className="col-11 d-flex flex-row justify-content-between align-items-center mt-5 mb-0 ms-5"
+                        >
+                            <h3 className="">Tên</h3>
+                            <div className=" d-flex flex-row align-items-center">
+                                <h3 className="me-5">Loại OKR</h3>
+                                <h3 className="me-5">Ngày cập nhật</h3>
+                                <h3 className="">Tiến trình</h3>
+                            </div>
+                        </li>
+                        <hr />
+                        {currentTableData.map((obj) => {
                             console.log('obj:', obj);
                             obj.processing = '0';
-                            return <Objective props={obj} />;
+                            return <Objective props={obj}/>;
                         })}
                     </ul>
                 </section>
             </article>
+            <Pagination
+                className="pagination-bar col-12"
+                currentPage={currentPage}
+                totalCount={objectives.length}
+                pageSize={PageSize}
+                onPageChange={(page) => setCurrentPage(page)}
+            />
             <Footer />
         </div>
     );
@@ -63,7 +96,7 @@ HomePage.propTypes = {};
 const Objective = (props) => {
     const { _id, name, type, description, deadline, createdAt, updatedAt, processing } = props.props;
 
-    var updateDate = new Date(updatedAt).toLocaleString('vi', { hour12: true });
+    var updateDate = new Date(updatedAt).toLocaleString('vi', { hour12: true }) ?? 'Create At';
     const [seen, setSeen] = useState(false);
     const handleObj = () => {
         setSeen(!seen);

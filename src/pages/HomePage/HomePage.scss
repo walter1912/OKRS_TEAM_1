@@ -2,6 +2,12 @@
 
 .obj {
 
+    &__list {
+        margin-top: 1rem;  
+        border: 1px solid $mainColor;
+        border-radius: 10px;
+    }
+
     &__item {
         background-color: $secondColor;
         border-radius: 10px;

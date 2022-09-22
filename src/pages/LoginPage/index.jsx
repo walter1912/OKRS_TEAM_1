@@ -1,13 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field, Form, Formik } from 'formik';
+import { Field, Form, Formik, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 import { Link } from 'react-router-dom';
 // scss
 import './LoginPage.scss';
 import { Icon, Img } from '~/assets/constants';
 
+
 const LoginPage = (props) => {
+
+    const LoginSchema = Yup.object().shape({
+        username: Yup.string().required('enter your username'),
+        password: Yup.string().required('enter your password'),
+    });
+
+
     return (
         <div className="container row login">
             <div className="layout-left col-4">
@@ -36,6 +45,7 @@ const LoginPage = (props) => {
                                 actions.setSubmitting(false);
                             }, 200);
                         }}
+                        validationSchema={LoginSchema}
                     >
                         {({ errors, touched }) => (
                             <Form className="col-12">
@@ -46,6 +56,7 @@ const LoginPage = (props) => {
                                         type="text"
                                         placeholder="Username"
                                     />
+                                    <ErrorMessage component="p" className="text-warning" name="username" />
                                 </div>
                                 <div className="mb-5">
                                     <Field
@@ -54,6 +65,7 @@ const LoginPage = (props) => {
                                         type="password"
                                         placeholder="Password"
                                     />
+                                        <ErrorMessage component="p" className="text-warning" name="password" />
                                 </div>
                                 <button
                                     className=" mt-5 btn btn-submit col-12 d-flex justify-content-center"

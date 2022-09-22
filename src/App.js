@@ -1,13 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import HomePage from '~/page/HomePage';
-import LoginPage from '~/page/LoginPage';
-import RegisterPage from '~/page/RegisterPage';
-import UserPage from './page/UserPage';
-import EditUserPage from './page/EditUserPage';
+import Header from './layouts/Header';
+import Footer from './layouts/Footer';
+import HomePage from '~/pages/HomePage';
+import LoginPage from '~/pages/LoginPage';
+import RegisterPage from '~/pages/RegisterPage';
+import UserPage from './pages/UserPage';
+import EditUserPage from './pages/EditUserPage';
+import CreateObjective from './pages/CreateObjective';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path='/register' element={<RegisterPage/>} />
         <Route path='/user' element={<UserPage />} />
         <Route path='/user/edit' element={<EditUserPage />} />
+        <Route path='/createObjective' element={<CreateObjective />} />
       </Routes>
       {/* <Footer /> */}
     </div>
