@@ -3,9 +3,13 @@ import PropTypes from 'prop-types';
 import { Img } from '~/assets/constants';
 import './UserPage.scss';
 
-import user from '../../assets/APIs_tmp/user.json';
+// import user from '../../assets/APIs_tmp/user.json';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
+import { useSelector } from 'react-redux';
+
 const UserPage = (props) => {
+    const user = useSelector((state)=> state.user);
     return (
         <div className="infor col-10 d-flex flex-column">
             <nav className="infor__main d-flex flex-row align-items-center">
@@ -27,7 +31,7 @@ const UserPage = (props) => {
                     </li>
                     <li className="infor__item d-flex flex-row align-items-center">
                         <i class="fa-regular fa-calendar-days"></i>
-                        <span className="ms-4">{user.dob}</span>
+                        <span className="ms-4">{moment(user.dob).format("MMMM Do YYYY")}</span>
                     </li>
                     <li className="infor__item d-flex flex-row align-items-center">
                         <i class="fa-regular fa-address-book"></i>

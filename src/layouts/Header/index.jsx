@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Img } from '~/assets/constants';
 import './Header.scss';
-import user from '../../assets/APIs_tmp/user.json';
+// import user from '../../assets/APIs_tmp/user.json';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 const Header = (props) => {
-    const { _id, firstName, lastName } = props.props;
+    const user = useSelector((state) => state.user)
+    const { _id, firstName, lastName } = user;
     console.log("id, f, l: ", _id,firstName, lastName)
-    console.log("props: ", props);
+    console.log("props: ", user);
 
     return (
         <header className=" header--homePage d-flex flex-row justify-content-between align-items-center p-5">
@@ -43,4 +45,4 @@ Header.propTypes = {
     lastName: PropTypes.string,
 };
 
-export default Header;
+export default memo(Header);

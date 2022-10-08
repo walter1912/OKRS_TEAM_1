@@ -3,35 +3,54 @@ import PropTypes from 'prop-types';
 import { Icon, Img } from '~/assets/constants.js';
 import clsx from 'clsx';
 import './HomePage.scss';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import Header from '~/layouts/Header';
 import Footer from '~/layouts/Footer';
 
-import user from '../../assets/APIs_tmp/user.json';
+// import user from '../../assets/APIs_tmp/user.json';
 import objectives from '../../assets/APIs_tmp/objectives.json';
 import Pagination from '~/components/Pagination';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { userRequest } from '~/services/user/userRequest';
+import { objectiveRequest } from '~/services/objective/objectiveRequest';
 
 const HomePage = (props) => {
     let PageSize = 3;
-// phân trang
-const [currentPage, setCurrentPage] = useState(1);
+    // phân trang
+    const [currentPage, setCurrentPage] = useState(1);
 
-  const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * PageSize;
-    const lastPageIndex = firstPageIndex + PageSize;
-    return objectives.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage]);
-// hết phần phân trang
+    const currentTableData = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * PageSize;
+        const lastPageIndex = firstPageIndex + PageSize;
+        return objectives.slice(firstPageIndex, lastPageIndex);
+    }, [currentPage]);
+    // hết phần phân trang
+    const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.user);
+    const { listObjective } = useSelector((state) => state.objective);
 
+    useEffect(() => {
+        if (user === null) {
+            userRequest.getInfor(dispatch);
+        }
+    }, []);
+    useEffect(() => {
+        if (listObjective.length === 0) {
+            objectiveRequest.getListObjective(dispatch);
+        }
+    }, []);
     return (
         <div>
-            <Header props={user} />
+            <Header />
             <article className="container p-0">
                 <h1>My Objectives</h1>
                 <nav className="row d-flex flex-row justify-content-between align-items-center">
                     <div className="col-6 d-flex justify-content-between align-items-center mt-4">
-                        <button className="btn btn-primary">Create Objective</button>
+                        <Link to="/createObjective">
+                            {' '}
+                            <button className="btn btn-primary">Create Objective</button>
+                        </Link>
                         <form className="d-flex align-items-center" action="" method="post">
                             <input
                                 className="form-control"
@@ -74,7 +93,7 @@ const [currentPage, setCurrentPage] = useState(1);
                         {currentTableData.map((obj) => {
                             console.log('obj:', obj);
                             obj.processing = '0';
-                            return <Objective props={obj}/>;
+                            return <Objective props={obj} />;
                         })}
                     </ul>
                 </section>
@@ -104,13 +123,14 @@ const Objective = (props) => {
     return (
         <div>
             <div className="d-flex flex-row align-items-center col-12">
-                <i className={clsx('fa-solid', { 'fa-chevron-down': seen }, { 'fa-chevron-right': !seen })}></i>
-                <li
-                    id={_id}
-                    className="col-11 obj__item d-flex flex-row justify-content-between align-items-center"
+                <i
+                    className={clsx('fa-solid', { 'fa-chevron-down': seen }, { 'fa-chevron-right': !seen })}
                     onClick={() => handleObj()}
-                >
-                    <h2 className="">{name}</h2>
+                ></i>
+                <li id={_id} className="col-11 obj__item d-flex flex-row justify-content-between align-items-center">
+                    <Link to={`objectives/${_id}`}>
+                        <h2 className="">{name}</h2>
+                    </Link>
                     <div className=" d-flex flex-row align-items-center">
                         <span className="me-5">{type}</span>
                         <span className="me-5">{updateDate}</span>

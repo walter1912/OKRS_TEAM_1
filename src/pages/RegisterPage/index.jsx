@@ -16,10 +16,10 @@ const RegisterPage = (props) => {
     // validate
 
     const SignupSchema = Yup.object().shape({
-        fullname: Yup.string().min(2, 'too short').required('enter your fullname'),
-        email: Yup.string().email('Invalid email').required('enter your email'),
-        username: Yup.string().min(2, 'too short').required('enter your username'),
-        password: Yup.string().min(6, 'Weak password').required('enter your password'),
+        firstName: Yup.string().min(2, 'Too short').required('   Enter your firstName'),
+        email: Yup.string().email('Invalid email').required('   Enter your email'),
+        lastName: Yup.string().min(2, 'Too short').required('   Enter your lastName'),
+        password: Yup.string().min(6, 'Weak password').required('   Enter your password'),
     });
 
     return (
@@ -35,7 +35,7 @@ const RegisterPage = (props) => {
                     <h1 className="title mb-5">Create Account</h1>
 
                     <Formik
-                        initialValues={{ fullname: '', email: '', username: '', password: '' }}
+                        initialValues={{ firstName: '', email: '', lastName: '', password: '' }}
                         onSubmit={(values, actions) => {
                             setTimeout(() => {
                                 alert(JSON.stringify(values, null, 2));
@@ -48,12 +48,12 @@ const RegisterPage = (props) => {
                             <Form className="col-12">
                                 <div className="mb-5">
                                     <Field
-                                        name="fullname"
+                                        name="firstName"
                                         className="form-control radius"
                                         type="text"
-                                        placeholder="Fullname"
+                                        placeholder="First Name"
                                     />
-                                    <ErrorMessage component="p" className="text-warning" name="fullname" />
+                                    <ErrorMessage component="p" className="text-warning" name="firstName" />
                                 </div>
                                 <div className="mb-5">
                                     <Field
@@ -66,12 +66,12 @@ const RegisterPage = (props) => {
                                 </div>
                                 <div className="mb-5">
                                     <Field
-                                        name="username"
+                                        name="lastName"
                                         className="form-control radius"
                                         type="text"
-                                        placeholder="Username"
+                                        placeholder="Last Name"
                                     />
-                                    <ErrorMessage component="p" className="text-warning" name="username" />
+                                    <ErrorMessage component="p" className="text-warning" name="lastName" />
                                 </div>
                                 <div className="mb-5">
                                     <Field
