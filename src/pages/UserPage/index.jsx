@@ -9,7 +9,7 @@ import moment from 'moment';
 import { useSelector } from 'react-redux';
 
 const UserPage = (props) => {
-    const user = useSelector((state)=> state.user);
+    const {user} = useSelector((state)=> state.user);
     return (
         <div className="infor col-10 d-flex flex-column">
             <nav className="infor__main d-flex flex-row align-items-center">

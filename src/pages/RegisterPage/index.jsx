@@ -6,22 +6,23 @@ import { Link } from 'react-router-dom';
 
 // formik
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 // assets
 import { Icon, Img } from '~/assets/constants.js';
 // css
 import './RegisterPage.scss';
-
+import { authRequest } from '~/services/auth/authRequest';
+import { useDispatch } from 'react-redux';
+import { SignupSchema } from '~/utils/yup/schema';
+import { signupUser } from '~/utils/yup/propsType';
 const RegisterPage = (props) => {
     // validate
 
-    const SignupSchema = Yup.object().shape({
-        firstName: Yup.string().min(2, 'Too short').required('   Enter your firstName'),
-        email: Yup.string().email('Invalid email').required('   Enter your email'),
-        lastName: Yup.string().min(2, 'Too short').required('   Enter your lastName'),
-        password: Yup.string().min(6, 'Weak password').required('   Enter your password'),
-    });
-
+    const dispatch = useDispatch();
+    const handleSignup = (values, actions) => {
+        authRequest.signUp(values, dispatch);
+        console.log('...is signup');
+        actions.setSubmitting(false);
+    };
     return (
         <div className="container row register">
             <div className="layout-left col-4">
@@ -35,13 +36,8 @@ const RegisterPage = (props) => {
                     <h1 className="title mb-5">Create Account</h1>
 
                     <Formik
-                        initialValues={{ firstName: '', email: '', lastName: '', password: '' }}
-                        onSubmit={(values, actions) => {
-                            setTimeout(() => {
-                                alert(JSON.stringify(values, null, 2));
-                                actions.setSubmitting(false);
-                            }, 200);
-                        }}
+                        initialValues={{ ...signupUser }}
+                        onSubmit={(values, action) => handleSignup(values, action)}
                         validationSchema={SignupSchema}
                     >
                         {({ errors, touched }) => (

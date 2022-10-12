@@ -1,56 +1,70 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field, ErrorMessage, FastField } from 'formik';
-import * as Yup from 'yup';
 
 import './CreateObjective.scss';
 import Header from '~/layouts/Header';
 import Footer from '~/layouts/Footer';
-import user from '../../assets/APIs_tmp/user.json';
 import { Link } from 'react-router-dom';
+import { objectiveRequest } from '~/services/objective/objectiveRequest';
+import { useDispatch, useSelector } from 'react-redux';
+import { keyResultRequest } from '~/services/keyResult/keyResultRequest';
+import { getLocalStorage } from '~/utils/localStorage';
+import { ObjectiveSchema } from '~/utils/yup/schema';
+import { keyResults, newObjective } from '~/utils/yup/propsType';
 
-const KRs = [
-    {
-        name: 'name 1',
-        description: 'mô tả 1',
-        deadline: null,
-        status: 'trang thái 1',
-        message: 'message 1',
-    },
-];
-const validationObjective = {
-    name: Yup.string().required('Nhập tên objective'),
-    type: Yup.string().required('Chọn loại Objective'),
-    description: Yup.string().required('Nhập mô tả của Objective'),
-    deadline: Yup.date().required('Chọn ngày đến hạn của objective'),
-    keyResults: Yup.object().shape({
-        name: Yup.string().required('Nhập tên key result'),
-        description: Yup.string().required('Nhập mô tả của key result'),
-        deadline: Yup.date().required('Nhập ngày deadline của key result'),
-        status: Yup.string().required('Nhập trạng thái của key result'),
-        message: Yup.string().required('Nhập mesage của key result'),
-    }),
-};
 const CreateObjective = (props) => {
     const [addKR, setAddKR] = useState(false);
-    const [listKRs, setListKRs] = useState(KRs);
+    const [listKRs, setListKRs] = useState([]);
     const [checkRequest, setcheckRequest] = useState(false);
-    console.log(listKRs);
+    //  store
+    const { user } = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+    const requestStatus = useSelector((state) => state.setting.requestStatus);
+
+
+    // HANDLE ONCLICK
 
     const handleAddKR = (action) => {
         setAddKR(!addKR);
-        action('keyResults', { name: '', description: '', deadline: '', status: '', message: '' });
+        action('keyResults', { name: '', description: '', deadline: '' });
     };
-
     const handleSetListKRs = (kr) => {
-        let { name, description, deadline, status, message } = kr;
-        if (name === '' || description === '' || deadline === '' || status === '' || message === '') return;
-        setAddKR(!addKR);
+        const { name, description } = kr;
+        let deadline = new Date(kr.deadline).toISOString();
+        if (name === '' || description === '' || deadline === '') return;
+
+        let createdAt = new Date().toISOString();
+        let updateAt = new Date().toISOString();
+
         console.log('kr: ', kr);
         console.log('list KRs: ', listKRs);
-        setListKRs((pre) => [...pre, kr]);
+        setListKRs((pre) => [...pre, { ...kr, createdAt, updateAt, deadline }]);
         setcheckRequest(true);
+        setAddKR(!addKR);
     };
+    const handleOnSubmit = async (values, actions) => {
+        console.log('kr key: ', values.keyResults);
+        const { newObjective } = values;
+        let deadline = new Date(newObjective.deadline).toISOString();
+        let createdAt = new Date().toISOString();
+        let updateAt = new Date().toISOString();
+        const dataRes = { ...newObjective, createdAt, updateAt, deadline };
+        console.log('dataRes: ', dataRes);
+
+        // post objective
+        await objectiveRequest.createObjective(dataRes, dispatch);
+        if (requestStatus === 'SUCCESS') {
+            // post key result
+            const currentObjective = getLocalStorage('currentObjective');
+            listKRs.map((keyResult) => {
+                keyResultRequest.createKeyResult(currentObjective._id, keyResult, dispatch);
+                console.log('add kr to ', currentObjective._id);
+                console.log('kr is :', keyResult);
+            });
+        }
+        actions.setSubmitting(false);
+    }
 
     return (
         <div>
@@ -59,61 +73,54 @@ const CreateObjective = (props) => {
                 <h1>Create your objective</h1>
                 <Formik
                     initialValues={{
-                        _id: '',
-                        name: '',
-                        type: '',
-                        description: '',
-                        deadline: '',
-                        userId: '',
-                        createdAt: '',
-                        keyResults: { name: '', description: '', deadline: '', status: '', message: '' },
+                        newObjective: {
+                           ...newObjective
+                        },
+                        keyResults: {
+                          ...keyResults
+                        },
                     }}
-                    validationSchema={Yup.object().shape(validationObjective)}
-                    onSubmit={(values, actions) => {
-                        setTimeout(() => {
-                            alert(JSON.stringify(values, null, 2));
-                            console.log('krey: ', values.keyResults);
-                            const { name, deadline, description } = values;
-                            let createdAt = new Date();
-                            const dataRes = { name, deadline, description, listKRs, createdAt };
-                            console.log('dataRes: ', dataRes);
-                            actions.setSubmitting(false);
-                        }, 200);
-                      
-                    }}
+                    validationSchema={ObjectiveSchema}
+                    onSubmit={(values, action) =>handleOnSubmit(values, action)}
                 >
-                    {({ values, setFieldValue, handleSubmit, errors }) => (
+                    {({ values, setFieldValue }) => (
                         <Form className="row col-6 m-auto d-flex">
                             <div className="mt-2 mb-2">
                                 <Field
-                                    name="name"
+                                    name="newObjective.name"
                                     className="form-control radius"
                                     type="text"
                                     placeholder="Name Objective"
                                 />
-                                <ErrorMessage component="p" className="text-warning field-error" name="name" />
+                                <ErrorMessage
+                                    component="p"
+                                    className="text-warning field-error"
+                                    name="newObjective.name"
+                                />
                             </div>
                             <div className="mt-2 mb-2 col-12 d-flex flex-row">
-                                <FastField name="type">
+                                <FastField name="newObjective.type">
                                     {({ field }) => (
                                         <select {...field} className="form-select" style={{ width: '200px' }}>
-                                            {/* <h2 htmlFor="type">What is your objective type?</h2> */}
-                                            <option selected value="NY">
-                                                New York
-                                            </option>
-                                            <option value="SF">San Francisco</option>
-                                            <option value="CH">Chicago</option>
-                                            <option value="OTHER">Other</option>
+                                            <option value="BREAKTHROUGH">BREAKTHROUGH</option>
+                                            <option value="COMMIT">COMMIT</option>
                                         </select>
                                     )}
                                 </FastField>
-                                <ErrorMessage component="p" className="text-warning field-error" name="type" />
-
-                                <Field type="date" name="deadline" className="form-control"></Field>
-                                <ErrorMessage component="p" className="text-warning field-error" name="deadline" />
+                                <ErrorMessage
+                                    component="p"
+                                    className="text-warning field-error"
+                                    name="newObjective.type"
+                                />
+                                <Field type="date" name="newObjective.deadline" className="form-control"></Field>
+                                <ErrorMessage
+                                    component="p"
+                                    className="text-warning field-error"
+                                    name="newObjective.deadline"
+                                />
                             </div>
                             <div className="mt-2 mb-2">
-                                <FastField name="description">
+                                <FastField name="newObjective.description">
                                     {({ field }) => (
                                         <div class="form-floating">
                                             <textarea
@@ -126,9 +133,12 @@ const CreateObjective = (props) => {
                                         </div>
                                     )}
                                 </FastField>
-                                <ErrorMessage component="p" className="text-warning field-error" name="description" />
+                                <ErrorMessage
+                                    component="p"
+                                    className="text-warning field-error"
+                                    name="newObjective.description"
+                                />
                             </div>
-
                             <div>
                                 {addKR && (
                                     <div className="row" style={{ backgroundColor: '#fafafa' }}>
@@ -165,24 +175,7 @@ const CreateObjective = (props) => {
                                                 name="keyResults.deadline"
                                             />
                                         </div>
-                                        <div className="col-6 mt-2 mb-2">
-                                            <label htmlFor="">Trạng thái: </label>
-                                            <Field type="text" name="keyResults.status" />
-                                            <ErrorMessage
-                                                component="p"
-                                                className="text-warning field-error"
-                                                name="keyResults.status"
-                                            />
-                                        </div>
-                                        <div className="col-6 mt-2 mb-2">
-                                            <label htmlFor="">Message: </label>
-                                            <Field type="text" name="keyResults.message" />
-                                            <ErrorMessage
-                                                component="p"
-                                                className="text-warning field-error"
-                                                name="keyResults.message"
-                                            />
-                                        </div>
+
                                         <button
                                             className="btn btn-secondary"
                                             type="button"
@@ -204,13 +197,14 @@ const CreateObjective = (props) => {
                                 ))}
                             </div>
                             <div className="d-flex justify-content-between">
-
-                            <Link to={checkRequest ? '/' :''}>
-                                <button className="btn btn-primary">Hoàn thành</button>
-                            </Link>
-                            <Link to='..' relative='path'>
-                                <button className="btn btn-outline-secondary">Trở lại</button>
-                            </Link>
+                                {/* <Link to={checkRequest ? '/' : ''}> */}
+                                <button type="submit" className="btn btn-primary">
+                                    Hoàn thành
+                                </button>
+                                {/* </Link> */}
+                                <Link to=".." relative="path">
+                                    <button className="btn btn-outline-secondary">Trở lại</button>
+                                </Link>
                             </div>
                         </Form>
                     )}
@@ -223,8 +217,9 @@ const CreateObjective = (props) => {
 
 CreateObjective.propTypes = {};
 const KeyResult = React.memo((props) => {
-    const { name, description, deadline, status, message } = props.props;
-    console.log('props: ', props);
+    const kr = props.props;
+    const { name, description, deadline, status, message } =kr;
+    // console.log('props: ', props);
     return (
         <ul>
             <li>Tên: {name}</li>

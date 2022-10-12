@@ -14,22 +14,23 @@ import { useEffect } from 'react';
 import { objectiveRequest } from '~/services/objective/objectiveRequest';
 
 const ViewObjectivePage = (props) => {
-    let { idObjective } = useParams();
-    const [objective, setObjective] = useState({});
-    const user = useSelector((state) => state.user);
+    let { objectiveID } = useParams();
+    const [objective, setObjective] = useState();
+    const {user} = useSelector((state) => state.user);
     const dispatch = useDispatch();
     useEffect(() => {
         const fetchObjective = async () => {
-            const res = await objectiveRequest.getDetailObjective(idObjective, dispatch);
+            const res = await objectiveRequest.getDetailObjective(objectiveID, dispatch);
             setObjective(res);
         };
         fetchObjective();
-    }, [idObjective]);
+    }, [objectiveID]);
     // get keyresult from objetive
     
 
-    // console.log('view objective:', idObjective, ObjRes);
-    const { _id, name, type, description, deadline, userId, keyResults, createdAt, updatedAt, __v } = objective;
+    // console.log('view objective:', objectiveID, ObjRes);
+    const { _id, name, type, description, deadline, userId, createdAt, updatedAt, __v } = objective;
+    let keyResults = [];
     if (keyResults.length === 0) {
         for (let i = 1; i < 5; i++) {
             keyResults.push(`kết quả then chốt thứ ${i}`);

@@ -6,6 +6,7 @@ import './HomePage.scss';
 import { Link, Outlet } from 'react-router-dom';
 import Header from '~/layouts/Header';
 import Footer from '~/layouts/Footer';
+import moment  from 'moment';
 
 // import user from '../../assets/APIs_tmp/user.json';
 import objectives from '../../assets/APIs_tmp/objectives.json';
@@ -16,6 +17,11 @@ import { userRequest } from '~/services/user/userRequest';
 import { objectiveRequest } from '~/services/objective/objectiveRequest';
 
 const HomePage = (props) => {
+    const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.user);
+    const { listObjective } = useSelector((state) => state.objective);
+    const [objectives, setObjectives] = useState([...listObjective]);
+    console.log('list objective at homePage: ', objectives);
     let PageSize = 3;
     // phân trang
     const [currentPage, setCurrentPage] = useState(1);
@@ -26,19 +32,16 @@ const HomePage = (props) => {
         return objectives.slice(firstPageIndex, lastPageIndex);
     }, [currentPage]);
     // hết phần phân trang
-    const dispatch = useDispatch();
-    const { user } = useSelector((state) => state.user);
-    const { listObjective } = useSelector((state) => state.objective);
 
     useEffect(() => {
         if (user === null) {
             userRequest.getInfor(dispatch);
         }
     }, []);
-    useEffect(() => {
-        if (listObjective.length === 0) {
-            objectiveRequest.getListObjective(dispatch);
-        }
+    useEffect(() => { 
+        objectiveRequest.getListObjective(dispatch);
+        console.log('list objective at homePage after dispatch: ', objectives);
+        setObjectives([...listObjective]);
     }, []);
     return (
         <div>
@@ -92,7 +95,7 @@ const HomePage = (props) => {
                         <hr />
                         {currentTableData.map((obj) => {
                             console.log('obj:', obj);
-                            obj.processing = '0';
+                            let processing = '0';
                             return <Objective props={obj} />;
                         })}
                     </ul>
@@ -113,13 +116,27 @@ const HomePage = (props) => {
 HomePage.propTypes = {};
 
 const Objective = (props) => {
-    const { _id, name, type, description, deadline, createdAt, updatedAt, processing } = props.props;
-
-    var updateDate = new Date(updatedAt).toLocaleString('vi', { hour12: true }) ?? 'Create At';
+    const objective = props.props;
+    const { _id, name, type } = objective;
+    let progress = 30;
+    console.log("props objective: ", objective);
+    // var updateDate = new Date(updatedAt).toLocaleString('vi', { hour12: true }) ?? 'Create At';
+    let deadline = moment(objective.deadline).format('MMMM Do YYYY');
     const [seen, setSeen] = useState(false);
+
+    // store
+    const dispatch = useDispatch();
+
     const handleObj = () => {
         setSeen(!seen);
     };
+    const handleDeleteObjective = (objectiveID)=> {
+        // confirm
+        if (window.confirm(`Bạn có muốn xóa objective ${name} không?`) === true) {
+            objectiveRequest.deleteObjective(objectiveID, dispatch);
+          }
+          
+    }
     return (
         <div>
             <div className="d-flex flex-row align-items-center col-12">
@@ -133,25 +150,26 @@ const Objective = (props) => {
                     </Link>
                     <div className=" d-flex flex-row align-items-center">
                         <span className="me-5">{type}</span>
-                        <span className="me-5">{updateDate}</span>
-                        <div className="obj__processing">{processing}</div>
+                        <span className="me-5">{deadline}</span>
+                        <div className="obj__processing">{progress}%</div>
                     </div>
+                    <button onClick={()=>handleDeleteObjective(_id)}>Xóa</button>
                 </li>
             </div>
-            {seen && <p className="obj__des">{description}</p>}
+            {/* {seen && <p className="obj__des">{description}</p>} */}
         </div>
     );
 };
 Objective.propTypes = {
     // _id, name, type, description, deadline, createdAt, updatedAt, processing
-    _id: PropTypes.string,
-    name: PropTypes.string,
-    type: PropTypes.string,
-    description: PropTypes.string,
-    deadline: PropTypes.string,
-    createdAt: PropTypes.string,
-    updatedAt: PropTypes.string,
-    processing: PropTypes.string,
+    // _id: PropTypes.string,
+    // name: PropTypes.string,
+    // type: PropTypes.string,
+    // description: PropTypes.string,
+    // deadline: PropTypes.string,
+    // createdAt: PropTypes.string,
+    // updatedAt: PropTypes.string,
+    // progress: PropTypes.string,
 };
 
 export default HomePage;

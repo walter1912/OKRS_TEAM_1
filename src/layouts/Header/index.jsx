@@ -4,13 +4,14 @@ import { Img } from '~/assets/constants';
 import './Header.scss';
 // import user from '../../assets/APIs_tmp/user.json';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { userRequest } from '~/services/user/userRequest';
 const Header = (props) => {
-    const user = useSelector((state) => state.user)
-    const { _id, firstName, lastName } = user;
-    console.log("id, f, l: ", _id,firstName, lastName)
+    const {user} = useSelector((state) => state.user)
+    const { firstName, lastName } = user;
+    console.log("user headerPage: ", user);
+    console.log("id, f, l: ",firstName, lastName)
     console.log("props: ", user);
-
     return (
         <header className=" header--homePage d-flex flex-row justify-content-between align-items-center p-5">
             <div className="user d-flex flex-row align-items-center">
@@ -40,7 +41,7 @@ const Header = (props) => {
 
 Header.propTypes = {
     props: PropTypes.object,
-    id: PropTypes.string,
+    _id: PropTypes.string,
     firstName: PropTypes.string,
     lastName: PropTypes.string,
 };

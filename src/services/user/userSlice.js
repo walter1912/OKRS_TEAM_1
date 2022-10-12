@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getLocalStorage, removeLocalStorage, setLocalStorage } from '~/utils/localStorage';
 
 const initialState = {
-    current_user: getLocalStorage('current_user'),
+    user: getLocalStorage('user'),
 };
 
 const userSlice = createSlice({
@@ -10,13 +10,19 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         getInfor(state, action) {
-            const current_user = action.payload;
-            setLocalStorage('current_user', current_user);
-            state.current_user = current_user;
+            const user = action.payload;
+            setLocalStorage('user', user);
+            state.user = user;
+        },
+        updateInfor(state, action) {
+            const user =  action.payload;
+            removeLocalStorage('user');
+            setLocalStorage('user', user);
+            state.user = user;
         },
         logout(state, action) {
-            state.current_user = null;
-            removeLocalStorage('current_user');
+            state.user = null;
+            removeLocalStorage('user');
         },
     },
 });

@@ -17,14 +17,14 @@ const MainRoutes = (props) => {
             <Routes>
                 <Route path="/sign-up" element={<RegisterPage />} />
                 <Route path="/login" element={<LoginPage />} />
-                <Route path="/" element={<HomePage />} />
+              
                 <Route path="" element={<AuthRoute />}>
-                    
+                <Route path="/" element={<HomePage />} />
                     <Route path="/user" element={<UserPage />} />
                     <Route path="/user/edit" element={<EditUserPage />} />
                     <Route path="/createObjective" element={<CreateObjective />} />
-                    <Route path="/objectives/:objectiveId" element={<ViewObjectivePage />} />
-                    <Route path="/key-results/:keyResultId" element={<ViewCommit />} />
+                    <Route path="/objectives/:objectiveID" element={<ViewObjectivePage />} />
+                    <Route path="/key-results/:keyResultID" element={<ViewCommit />} />
                 </Route>
             </Routes>
         </Suspense>

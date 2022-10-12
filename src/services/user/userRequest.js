@@ -1,11 +1,13 @@
 import axiosInstance from '~/utils/axiosInstance';
+import authActions from '../auth/authRequest';
+import { authSliceActions } from '../auth/authSlice';
 import { settingSliceActions } from '../setting/settingSlice';
 import { userSliceActions } from './userSlice';
 
 export const userRequest = {
     getInfor: async function (dispatch) {
         try {
-            const url = '/user';
+            const url = '/users/profile';
             dispatch(
                 settingSliceActions.setItem({
                     requestStatus: 'LOADING',
@@ -19,24 +21,26 @@ export const userRequest = {
                 }),
             );
         } catch (err) {
-            return err.response;
+            console.log('get infor user failed: ', err);
         }
     },
-    updateInfo: async function (data, dispatch, cb) {
+
+    updateInfor: async function (data, dispatch) {
         try {
             dispatch(
                 settingSliceActions.setItem({
                     requestStatus: 'LOADING',
                 }),
             );
-            const url = `/user/edit`;
-            const response = await axiosInstance.post(url, data);
+            const url = `/users/profile`;
+            const response = await axiosInstance.put(url, data);
             dispatch(
                 settingSliceActions.setItem({
                     requestStatus: 'SUCCESS',
                 }),
             );
-            cb();
+            dispatch(userSliceActions.updateInfor(response.data))
+            console.log('user update: ', response.data);
             return response.data;
         } catch (err) {
             dispatch(

@@ -8,18 +8,15 @@ import { Link, Navigate } from 'react-router-dom';
 import './LoginPage.scss';
 import { Icon, Img } from '~/assets/constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { authRequest } from '~/services/auth/authRequest';
-
-const LoginSchema = Yup.object().shape({
-    email: Yup.string().email().required('enter your email'),
-    password: Yup.string().required('enter your password'),
-});
+// import { authRequest } from '~/services/auth/authRequest';
+import { authRequest } from '../../services/auth/authRequest';
+import { LoginSchema } from '~/utils/yup/schema';
 const LoginPage = (props) => {
 
    
 
     const dispatch = useDispatch();
-    const {access_token} = useSelector((state) => state.auth);
+    const {accessToken} = useSelector((state) => state.auth);
     return (
         <div className="container row login">
             <div className="layout-left col-4">
@@ -44,6 +41,7 @@ const LoginPage = (props) => {
                         initialValues={{ email: 'leoasher@gmail.com', password: 'leoasher' }}
                         onSubmit={async (values, actions) => {
                             try {
+                                console.log('1111111111111111111')
                                 authRequest.login(values, dispatch);
                                 setTimeout(() => {
                                     alert(JSON.stringify("login success"));
@@ -58,7 +56,7 @@ const LoginPage = (props) => {
                     >
                         {({ errors, touched }) => (
                             <Form className="col-12">
-                                {access_token && <Navigate to='/' />}
+                                {accessToken && <Navigate to='/' />}
                                 <div className="mb-5">
                                     <Field
                                         name="email"

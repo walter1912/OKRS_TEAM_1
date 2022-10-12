@@ -4,31 +4,34 @@ import { getLocalStorage } from 'src/utils/localStorage';
 
 export const axiosInstance = axios.create({
     // withCredentials: false,
-    baseURL: process.env.BASE_API_URL || 'https://okr-leoasher.herokuapp.com/api/v1',
+    // process.env.BASE_API_URL || 
+    baseURL: 'https://okr-leoasher.herokuapp.com/api/v1',
     headers: {
         'Content-Type': 'application/json',
     },
     paramsSerializer: (params) => queryString.stringify(params),
 });
 
-// axiosInstance.interceptors.request.use(
-//     async (config) => {
-//         const access_token = getLocalStorage('access_token');
-//         if (access_token && config && config.headers) {
-//             config.headers.Authorization = 'Bearer ' + access_token;
-//         }
-//         return config;
-//     },
-//     (error) => {
-//         return Promise.reject(error.response);
-//     },
-// );
+axiosInstance.interceptors.request.use(
+    async (config) => {
+        const accessToken = getLocalStorage('accessToken');
+        if (accessToken && config && config.headers) {
+            config.headers.Authorization = 'Bearer ' + accessToken;
+        }
+        console.log("config.headers: ", config.headers)
+        return config;
+    },
+    
+    (error) => {
+        return Promise.reject(error.response);
+    },
+);
 
-// axiosInstance.interceptors.response.use(
-//     (res) => res,
-//     async (err) => {
-//         return Promise.reject(err.response);
-//     },
-// );
+axiosInstance.interceptors.response.use(
+    (res) => res,
+    async (err) => {
+        return Promise.reject(err.response);
+    },
+);
 
 export default axiosInstance;
